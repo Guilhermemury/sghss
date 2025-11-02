@@ -23,6 +23,10 @@ public class Profissional {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O nome é obrigatório")
+    @Column(nullable = false)
+    private String nome;
+
     @NotBlank(message = "O CRM é obrigatório")
     @Column(nullable = false, unique = true, length = 20)
     private String crm;
