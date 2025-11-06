@@ -5,12 +5,14 @@ import com.vidaplus.sghss.entity.Profissional;
 import com.vidaplus.sghss.entity.Usuario;
 import com.vidaplus.sghss.enums.Perfil;
 import com.vidaplus.sghss.repository.ProfissionalRepository;
+import com.vidaplus.sghss.exception.ResourceNotFoundException;
 import com.vidaplus.sghss.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -54,5 +56,14 @@ public class ProfissionalService {
         novoProfissional.setUsuario(usuarioSalvo);
 
         return profissionalRepository.save(novoProfissional);
+    }
+
+    public List<Profissional> listarTodos() {
+        return profissionalRepository.findAll();
+    }
+
+    public Profissional buscarPorId(Long id) {
+        return profissionalRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado com ID: " + id));
     }
 }

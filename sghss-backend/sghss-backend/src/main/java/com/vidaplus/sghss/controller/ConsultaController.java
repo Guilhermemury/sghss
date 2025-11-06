@@ -1,6 +1,7 @@
 package com.vidaplus.sghss.controller;
 
 import com.vidaplus.sghss.dto.ConsultaRequest;
+import com.vidaplus.sghss.dto.RealizarConsultaRequest;
 import com.vidaplus.sghss.entity.Consulta;
 import com.vidaplus.sghss.service.ConsultaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -69,5 +70,18 @@ public class ConsultaController {
     public ResponseEntity<Void> cancelarConsulta(@PathVariable Long id) {
         consultaService.cancelarConsulta(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Realiza uma consulta (marca como realizada).
+     */
+    @PatchMapping("/{id}/realizar")
+    @PreAuthorize("hasRole('PROFISSIONAL')")
+    @Operation(summary = "Realizar consulta", description = "Marca uma consulta como realizada e atualiza o prontuário do paciente")
+    public ResponseEntity<Consulta> realizarConsulta(
+            @PathVariable Long id,
+            @RequestBody RealizarConsultaRequest request) {
+        Consulta consulta = consultaService.realizarConsulta(id, request);
+        return ResponseEntity.ok(consulta);
     }
 }

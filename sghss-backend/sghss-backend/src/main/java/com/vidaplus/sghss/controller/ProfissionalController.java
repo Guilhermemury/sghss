@@ -12,13 +12,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/profissionais")
@@ -49,5 +47,25 @@ public class ProfissionalController {
                 .toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROFISSIONAL')")
+    @Operation(summary = "Listar todos os profissionais",
+            description = "Retorna a lista de todos os profissionais cadastrados")
+    public ResponseEntity<List<Profissional>> listarTodos() {
+        List<Profissional> profissionais = profissionalService.listarTodos();
+        return ResponseEntity.ok(profissionais);
+    }
+
+    @GetMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROFISSIONAL')")
+    @Operation(summary = "Buscar profissional por ID",
+            description = "Retorna os dados de um profissional específico")
+    public ResponseEntity<Profissional> buscarPorId(@PathVariable Long id) {
+        Profissional profissional = profissionalService.buscarPorId(id);
+        return ResponseEntity.ok(profissional);
     }
 }
