@@ -71,7 +71,7 @@ spring.datasource.password=sua_senha
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/sghss-backend.git
+git clone https://github.com/guilhermemury/sghss
 cd sghss-backend
 ```
 
